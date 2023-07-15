@@ -53,7 +53,7 @@ const BookCard: FC<
           className="w-[45px] h-[45px] rounded-full object-cover object-center"
         />
       </div>
-      <div className="absolute bottom-0 left-0 p-6 bg-gradient-to-r from-gray-900/25 to-gray-50/25  w-full space-y-2 text-white">
+      <div className="absolute bottom-0 left-0 p-6 bg-gradient-to-r from-gray-900/60 to-gray-50/25  w-full space-y-2 text-white">
         <h2 className="text-xl font-bold">{title}</h2>
         <p className="font-semibold">
           Published at ${moment(publicationDate).format('MMM YYYY')}

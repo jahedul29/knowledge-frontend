@@ -1,8 +1,9 @@
 import CommonButton from '@/components/Common/CommonButton';
 import Container from '@/components/Common/Container';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
   const headerLinks = [
     {
       label: 'Home',
@@ -36,7 +37,12 @@ const Header = () => {
         ))}
       </div>
       <div>
-        <CommonButton>Login</CommonButton>
+        <CommonButton
+          className="cursor-pointer"
+          onClick={() => navigate('/login')}
+        >
+          Login
+        </CommonButton>
       </div>
     </div>
   );
