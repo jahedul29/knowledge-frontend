@@ -40,7 +40,7 @@ const BookCard: FC<
         />
       </div>
       <div className="absolute flex items-center justify-between w-full p-6 top-0 left-0">
-        <div className="rounded-lg p-3 bg-primary text-white font-semibold">
+        <div className="rounded-lg px-3 py-2 bg-primary text-white font-semibold">
           {genre}
         </div>
         <img

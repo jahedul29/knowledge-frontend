@@ -6,7 +6,11 @@ const Rating: FC<{ rating: number }> = ({ rating }) => {
     <div className="inline-flex">
       {[...Array(5)].map((_, index) => (
         <span key={index}>
-          <AiFillStar color={index < rating ? 'green' : 'gray'} />
+          <AiFillStar
+            className={`text-lg ${
+              index < rating ? 'text-primary' : 'text-gray'
+            }`}
+          />
         </span>
       ))}
     </div>
