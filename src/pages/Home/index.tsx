@@ -1,10 +1,160 @@
+import BookCard from '@/components/Common/BookCard';
+import Container from '@/components/Common/Container';
+import SectionHeader from '@/components/Common/SectionHeader';
+import HeroSection from '@/components/Home/HeroSection';
 import { useAppSelector } from '@/redux/hooks';
+import { IBook } from '@/types/Book';
 
 const Home = () => {
   const counter = useAppSelector((state) => state.counter);
+  const bookList: IBook[] = [
+    {
+      _id: '1',
+      title: 'Pother Pachali',
+      description: 'descripton',
+      genre: 'Thriller',
+      cover: '/assets/images/defaultBookImage.jpg',
+      author: {
+        _id: '3',
+        phoneNumber: '2343242',
+        email: 'test',
+        role: 'user',
+        name: {
+          firstName: 'Mr',
+          lastName: 'Author',
+        },
+        dateOfBirth: undefined,
+        profileImage: '',
+        address: '',
+        rating: 3,
+        totalBooksPublished: 3,
+        isAuthor: true,
+        wishlist: [],
+      },
+      publicationDate: new Date(),
+      rating: 3,
+      alreadyReadCount: 100,
+      readingCount: 10,
+      reviews: [],
+    },
+    {
+      _id: '3',
+      title: 'Pother Pachali',
+      description: 'descripton',
+      genre: 'Thriller',
+      cover: '',
+      author: {
+        _id: '3',
+        phoneNumber: '2343242',
+        email: 'test',
+        role: 'user',
+        name: {
+          firstName: 'Mr',
+          lastName: 'Author',
+        },
+        dateOfBirth: undefined,
+        profileImage: '',
+        address: '',
+        rating: 3,
+        totalBooksPublished: 3,
+        isAuthor: true,
+        wishlist: [],
+      },
+      publicationDate: new Date(),
+      rating: 3,
+      alreadyReadCount: 100,
+      readingCount: 10,
+      reviews: [],
+    },
+    {
+      _id: '3',
+      title: 'Pother Pachali',
+      description: 'descripton',
+      genre: 'Thriller',
+      cover: '',
+      author: {
+        _id: '3',
+        phoneNumber: '2343242',
+        email: 'test',
+        role: 'user',
+        name: {
+          firstName: 'Mr',
+          lastName: 'Author',
+        },
+        dateOfBirth: undefined,
+        profileImage: '',
+        address: '',
+        rating: 3,
+        totalBooksPublished: 3,
+        isAuthor: true,
+        wishlist: [],
+      },
+      publicationDate: new Date(),
+      rating: 3,
+      alreadyReadCount: 100,
+      readingCount: 10,
+      reviews: [],
+    },
+    {
+      _id: '3',
+      title: 'Pother Pachali',
+      description: 'descripton',
+      genre: 'Thriller',
+      cover: '',
+      author: {
+        _id: '3',
+        phoneNumber: '2343242',
+        email: 'test',
+        role: 'user',
+        name: {
+          firstName: 'Mr',
+          lastName: 'Author',
+        },
+        dateOfBirth: undefined,
+        profileImage: '',
+        address: '',
+        rating: 3,
+        totalBooksPublished: 3,
+        isAuthor: true,
+        wishlist: [],
+      },
+      publicationDate: new Date(),
+      rating: 3,
+      alreadyReadCount: 100,
+      readingCount: 10,
+      reviews: [],
+    },
+  ];
 
   console.log(counter);
-  return <div>this is homepage</div>;
+  return (
+    <div>
+      <HeroSection />
+      <Container>
+        <SectionHeader
+          title="The Most Read Books"
+          subtitle="Best Books"
+          buttonLabel="View All"
+          buttonUrl="/"
+        />
+        <div className="grid grid-cols-3 gap-10">
+          {bookList.map((item: IBook, index: number) => (
+            <BookCard
+              _id={item._id}
+              title={item.title}
+              genre={item.genre}
+              author={item.author}
+              alreadyReadCount={item.alreadyReadCount}
+              publicationDate={item.publicationDate}
+              rating={item.rating}
+              cover={item.cover}
+              key={item._id}
+            />
+          ))}
+        </div>
+      </Container>
+    </div>
+  );
 };
 
 export default Home;
