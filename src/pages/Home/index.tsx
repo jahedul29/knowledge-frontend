@@ -8,10 +8,9 @@ import { useAppSelector } from '@/redux/hooks';
 import { IBook } from '@/types/Book';
 
 const Home = () => {
-  const { data, isLoading } = useGetBooksQuery(
-    { page: 1, limit: 6 },
-    { refetchOnMountOrArgChange: true }
-  );
+  const { data, isLoading } = useGetBooksQuery(`?page=1&limit:6`, {
+    refetchOnMountOrArgChange: true,
+  });
   // const bookList: IBook[] = [
   //   {
   //     _id: '1',
