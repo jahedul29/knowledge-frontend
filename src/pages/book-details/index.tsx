@@ -11,7 +11,7 @@ import { BiLocationPlus } from 'react-icons/bi';
 import { FaUserAlt } from 'react-icons/fa';
 import { MdOutlinePhoneIphone } from 'react-icons/md';
 import { HiOutlineMail } from 'react-icons/hi';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   GrFacebookOption,
   GrTwitter,
@@ -29,8 +29,7 @@ import { toast } from 'react-toastify';
 
 const BookDetails = () => {
   const { id } = useParams();
-  const location = useLocation();
-  const { data, isError, isLoading } = useGetBookDetailsQuery(id, {
+  const { data, isLoading } = useGetBookDetailsQuery(id, {
     refetchOnMountOrArgChange: true,
   });
   const [deleteBook, options] = useDeleteBookMutation();

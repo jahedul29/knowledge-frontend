@@ -4,7 +4,6 @@ import OverlayLoading from '@/components/Common/OverlayLoading';
 import SectionHeader from '@/components/Common/SectionHeader';
 import HeroSection from '@/components/Home/HeroSection';
 import { useGetBooksQuery } from '@/redux/features/book/bookApi';
-import { useAppSelector } from '@/redux/hooks';
 import { IBook } from '@/types/Book';
 
 const Home = () => {
@@ -24,7 +23,7 @@ const Home = () => {
           buttonUrl="/"
         />
         <div className="grid grid-cols-3 gap-10">
-          {data?.data?.data?.map((item: IBook, index: number) => (
+          {data?.data?.data?.map((item: IBook) => (
             <BookCard
               _id={item._id}
               title={item.title}

@@ -6,7 +6,7 @@ export interface IPrivateRouteProps {
   children: ReactNode;
 }
 const PrivateRoute = ({ children }: IPrivateRouteProps) => {
-  const { user, accessToken } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   const location = useLocation();
 
   if (!user) {

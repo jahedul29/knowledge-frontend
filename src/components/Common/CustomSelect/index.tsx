@@ -20,7 +20,8 @@ const CustomSelect: React.FC<SelectProps> = ({
   className,
   label,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setSelectedOptions] = useState<string[]>([]);
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;

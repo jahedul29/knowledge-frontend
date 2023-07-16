@@ -2,7 +2,6 @@ import CommonInput from '@/components/Common/CommonInput';
 import Container from '@/components/Common/Container';
 import OverlayLoading from '@/components/Common/OverlayLoading';
 import PageHeader from '@/components/Common/PageHeader';
-import Toast from '@/components/Common/Toast';
 import {
   useGetMyProfileQuery,
   useLoginMutation,
@@ -10,7 +9,6 @@ import {
 import { setToken, setUser } from '@/redux/features/auth/authSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import Cookies from 'js-cookie';
-import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -29,7 +27,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<ILoginInput>();
 

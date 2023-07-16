@@ -11,7 +11,6 @@ import {
   useUpdateBookMutation,
 } from '@/redux/features/book/bookApi';
 import { IBookGenre } from '@/types/Book';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,14 +28,11 @@ const AddBook = () => {
   const [updateBook, updateOptions] = useUpdateBookMutation();
   const location = useLocation();
   const navigate = useNavigate();
-  const { data: bookDetails, refetch } = useGetBookDetailsQuery(
-    location.state?.id
-  );
-  const [isEdit, setIsEdit] = useState(location?.state?.isEdit);
+  const { data: bookDetails } = useGetBookDetailsQuery(location.state?.id);
+  const [isEdit] = useState(location?.state?.isEdit);
   const {
     register,
     handleSubmit,
-    watch,
     control,
     reset,
     formState: { errors },

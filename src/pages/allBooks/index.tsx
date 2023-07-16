@@ -199,7 +199,7 @@ const AllBooks = () => {
           {/* <div className="p-4"></div> */}
         </div>
         <div className="grid grid-cols-3 gap-10">
-          {data?.data?.data?.map((item: IBook, index: number) => (
+          {data?.data?.data?.map((item: IBook) => (
             <BookCard
               _id={item._id}
               title={item.title}

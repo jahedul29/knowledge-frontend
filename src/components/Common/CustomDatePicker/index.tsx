@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
-import { Control, Controller } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 type DatePickerProps = {
   label?: string;

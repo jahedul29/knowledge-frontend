@@ -29,7 +29,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
           rows={rows}
           className={`border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-green-500 focus:border-green-500 w-full h-[50px] ${className}`}
           {...register}
-          {...props}
+          {...inputProps}
         />
       </div>
     );
