@@ -66,7 +66,7 @@ const Header = () => {
       ) : (
         <div className="flex">
           <CommonButton
-            className="cursor-pointer bg-green-600 rounded-none"
+            className="cursor-pointer bg-cyan-700 rounded-none"
             onClick={() => navigate('/register')}
           >
             Register
