@@ -4,6 +4,9 @@ import OverlayLoading from '@/components/Common/OverlayLoading';
 import PageHeader from '@/components/Common/PageHeader';
 import Toast from '@/components/Common/Toast';
 import { useLoginMutation } from '@/redux/features/auth/authApi';
+import { setToken } from '@/redux/features/auth/authSlice';
+import { useAppDispatch } from '@/redux/hooks';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -15,8 +18,13 @@ interface ILoginInput {
 
 const Login = () => {
   const [login, options] = useLoginMutation();
-  const [showToast, setShowToast] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [toastInfo, setToastInfo] = useState({
+    show: false,
+    type: '',
+    message: '',
+  });
 
   const {
     register,
@@ -27,9 +35,22 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<ILoginInput> = async (data) => {
     await login(data);
-    if (!options?.isLoading && !options.isError) {
-      setShowToast(true);
-      // navigate()
+    if (!options?.isLoading && options.isError) {
+      setToastInfo({
+        type: 'error',
+        message: options?.error?.data?.message,
+        show: true,
+      });
+    }
+    if (!options?.isUninitialized && !options?.isLoading && !options.isError) {
+      dispatch(setToken(options?.data?.data?.accessToken));
+      Cookies.set('accessToken', options?.data?.data?.accessToken);
+      setToastInfo({
+        type: 'success',
+        message: options?.data?.message,
+        show: true,
+      });
+      navigate('/');
     }
   };
 
@@ -38,11 +59,11 @@ const Login = () => {
   return (
     <div>
       {options?.isLoading && <OverlayLoading />}
-      {showToast && (
+      {toastInfo.show && (
         <Toast
-          message={options?.data?.message}
-          type="success"
-          onClose={() => setShowToast(false)}
+          message={toastInfo.message}
+          type="error"
+          onClose={() => setToastInfo((prev) => ({ ...prev, show: false }))}
         />
       )}
       <PageHeader

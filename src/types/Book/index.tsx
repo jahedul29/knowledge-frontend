@@ -8,21 +8,23 @@ export interface IReviewItem {
   updatedAt: Date;
 }
 
+export type IBookGenre =
+  | 'Fiction'
+  | 'Non-fiction'
+  | 'Mystery'
+  | 'Thriller'
+  | 'Science Fiction'
+  | 'Fantasy'
+  | 'Romance'
+  | 'Historical'
+  | 'Biography'
+  | 'Self-help';
+
 export interface IBook {
   _id: string;
   title: string;
   description: string;
-  genre:
-    | 'Fiction'
-    | 'Non-fiction'
-    | 'Mystery'
-    | 'Thriller'
-    | 'Science Fiction'
-    | 'Fantasy'
-    | 'Romance'
-    | 'Historical'
-    | 'Biography'
-    | 'Self-help';
+  genre: IBookGenre;
   author: string | IUser;
   cover?: string;
   rating: number;
