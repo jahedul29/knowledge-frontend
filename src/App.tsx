@@ -4,6 +4,8 @@ import { useAppDispatch } from './redux/hooks';
 import { setToken } from './redux/features/auth/authSlice';
 import Cookies from 'js-cookie';
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -14,6 +16,7 @@ function App() {
   return (
     <div>
       <MainLayout />
+      <ToastContainer />
     </div>
   );
 }

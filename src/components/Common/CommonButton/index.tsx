@@ -9,7 +9,7 @@ const CommonButton: FC<ICommonButtonProps> = ({
 }) => {
   return (
     <button
-      className={`bg-primary hover:bg-secondary border-none rounded text-white font-bold text-lg px-10 py-5 ${className}`}
+      className={`flex items-center justify-center bg-primary hover:bg-secondary border-none rounded text-white font-bold text-lg px-10 py-5 ${className}`}
       {...props}
     >
       {children}

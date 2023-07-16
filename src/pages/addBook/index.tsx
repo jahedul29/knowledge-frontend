@@ -2,11 +2,13 @@ import CommonInput from '@/components/Common/CommonInput';
 import Container from '@/components/Common/Container';
 import CustomDatePicker from '@/components/Common/CustomDatePicker';
 import CustomSelect from '@/components/Common/CustomSelect';
+import OverlayLoading from '@/components/Common/OverlayLoading';
 import PageHeader from '@/components/Common/PageHeader';
 import { bookGenre } from '@/helpers/constants';
+import { useAddBookMutation } from '@/redux/features/book/bookApi';
 import { IBookGenre } from '@/types/Book';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
+import { toast } from 'react-toastify';
 interface IAddBookInput {
   title: string;
   description: string;
@@ -16,18 +18,32 @@ interface IAddBookInput {
 }
 
 const AddBook = () => {
+  const [addBook, options] = useAddBookMutation();
   const {
     register,
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm<IAddBookInput>();
 
-  const onSubmit: SubmitHandler<IAddBookInput> = async (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<IAddBookInput> = async (data) => {
+    const result: any = await addBook(data);
+    console.log({ result });
+    if (result.error) {
+      toast.error(result.error.data.message);
+    }
+    if (result?.data) {
+      toast.success(result.data.message);
+
+      reset();
+    }
+  };
   return (
     <div>
+      {options?.isLoading && <OverlayLoading />}
+
       <PageHeader
         pageTitle="Add Book"
         breadCrumbItems={[{ label: 'Home', href: '/' }, { label: 'Add Book' }]}
@@ -40,7 +56,7 @@ const AddBook = () => {
           <div className="mb-5">
             <CommonInput
               label="Title"
-              type="title"
+              type="text"
               placeholder="Please enter book title"
               register={register('title', { required: true })}
             />
@@ -54,8 +70,10 @@ const AddBook = () => {
             <CommonInput
               label="Description"
               type="textarea"
+              rows={10}
+              cols={10}
               placeholder="Please enter book description"
-              register={register('title', { required: true })}
+              register={register('description', { required: true })}
             />
             {errors.title && (
               <span className="text-sm text-red-500 mt-1 inline-block">

@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface ILoginInput {
   email: string;
@@ -20,11 +21,6 @@ const Login = () => {
   const [login, options] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [toastInfo, setToastInfo] = useState({
-    show: false,
-    type: '',
-    message: '',
-  });
 
   const {
     register,
@@ -34,38 +30,23 @@ const Login = () => {
   } = useForm<ILoginInput>();
 
   const onSubmit: SubmitHandler<ILoginInput> = async (data) => {
-    await login(data);
-    if (!options?.isLoading && options.isError) {
-      setToastInfo({
-        type: 'error',
-        message: options?.error?.data?.message,
-        show: true,
-      });
+    const result: any = await login(data);
+    if (result?.error) {
+      toast.error(result.error.data.message);
     }
-    if (!options?.isUninitialized && !options?.isLoading && !options.isError) {
-      dispatch(setToken(options?.data?.data?.accessToken));
-      Cookies.set('accessToken', options?.data?.data?.accessToken);
-      setToastInfo({
-        type: 'success',
-        message: options?.data?.message,
-        show: true,
-      });
+    if (result?.data) {
+      dispatch(setToken(result?.data?.data?.accessToken));
+      Cookies.set('accessToken', result?.data?.data?.accessToken);
+      console.log(result);
+      toast.success(result?.data?.message);
       navigate('/');
     }
   };
 
-  console.log(options);
-
   return (
     <div>
       {options?.isLoading && <OverlayLoading />}
-      {toastInfo.show && (
-        <Toast
-          message={toastInfo.message}
-          type="error"
-          onClose={() => setToastInfo((prev) => ({ ...prev, show: false }))}
-        />
-      )}
+
       <PageHeader
         pageTitle="Login"
         breadCrumbItems={[{ label: 'Home', href: '/' }, { label: 'Login' }]}

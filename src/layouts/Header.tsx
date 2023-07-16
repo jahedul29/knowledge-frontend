@@ -26,6 +26,7 @@ const Header = () => {
     {
       label: 'Add Book',
       url: '/add-book',
+      authorized: true,
     },
   ];
 
@@ -37,15 +38,18 @@ const Header = () => {
           src="/assets/images/knowledgeLogo.png"
           alt=""
         />
-        {headerLinks.map((item, index: number) => (
-          <Link
-            key={index}
-            to={item.url}
-            className={`text-black hover:text-primary`}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {headerLinks.map(
+          (item, index: number) =>
+            ((item.authorized && accessToken) || !item.authorized) && (
+              <Link
+                key={index}
+                to={item.url}
+                className={`text-black hover:text-primary`}
+              >
+                {item.label}
+              </Link>
+            )
+        )}
       </div>
       {accessToken ? (
         <div>

@@ -29,7 +29,7 @@ const BookCard: FC<
 }) => {
   return (
     <Link
-      to={`/products/${_id}`}
+      to={`/books/${_id}`}
       className="h-[500px] w-full relative p-6 bg-green-100 overflow-hidden"
     >
       <div className="absolute h-full w-full overflow-hidden left-0 top-0 scale-100 hover:scale-150 transition-all duration-1000">

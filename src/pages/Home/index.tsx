@@ -2,13 +2,15 @@ import BookCard from '@/components/Common/BookCard';
 import Container from '@/components/Common/Container';
 import SectionHeader from '@/components/Common/SectionHeader';
 import HeroSection from '@/components/Home/HeroSection';
-import { useGetBooksQuery } from '@/redux/features/counter/book/bookApi';
+import { useGetBooksQuery } from '@/redux/features/book/bookApi';
 import { useAppSelector } from '@/redux/hooks';
 import { IBook } from '@/types/Book';
 
 const Home = () => {
-  const counter = useAppSelector((state) => state.counter);
-  const { data } = useGetBooksQuery({ page: 1, limit: 6 });
+  const { data } = useGetBooksQuery(
+    { page: 1, limit: 6 },
+    { refetchOnMountOrArgChange: true }
+  );
   // const bookList: IBook[] = [
   //   {
   //     _id: '1',

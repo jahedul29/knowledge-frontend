@@ -1,7 +1,7 @@
 import BookCard from '@/components/Common/BookCard';
 import Container from '@/components/Common/Container';
 import PageHeader from '@/components/Common/PageHeader';
-import { useGetBooksQuery } from '@/redux/features/counter/book/bookApi';
+import { useGetBooksQuery } from '@/redux/features/book/bookApi';
 import { IBook } from '@/types/Book';
 
 const AllBooks = () => {

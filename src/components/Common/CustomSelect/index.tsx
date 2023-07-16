@@ -40,11 +40,11 @@ const CustomSelect: React.FC<SelectProps> = ({
   };
 
   return (
-    <>
+    <div className="pb-2">
       {label && <label className="mb-1 inline-block">{label}</label>}
       <select
         multiple={isMulti}
-        value={selectedOptions}
+        // value={selectedOptions}
         onChange={handleSelectChange}
         className={`border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-green-500 focus:border-green-500 w-full h-[50px] ${className}`}
         {...register}
@@ -55,7 +55,7 @@ const CustomSelect: React.FC<SelectProps> = ({
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
 };
 
