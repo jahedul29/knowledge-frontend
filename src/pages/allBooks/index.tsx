@@ -39,8 +39,6 @@ const AllBooks = () => {
     genre: queryParams.get('genre') || '',
   });
 
-  const sortByOptions = Object.keys({} as IBook) as Array<keyof IBook>;
-
   const navigateWithParams = () => {
     navigate(
       `/books?page=${filters.page}&limit=${filters.limit}&searchTerm=${filters.searchTerm}&sortBy=${filters.sortBy}&sortOrder=${filters.sortOrder}&genre=${filters.genre}`
@@ -94,41 +92,36 @@ const AllBooks = () => {
               className="flex items-end justify-stretch space-x-4 mb-4 w-full"
             >
               {/* Sort By Dropdown */}
-              <div className="relative">
-                <div className="flex flex-1 flex-col space-y-2">
-                  <label
-                    htmlFor="sort-by"
-                    className="text-gray-700 font-medium mr-2"
+              <div className="relative flex flex-1 flex-col space-y-2">
+                <label
+                  htmlFor="sort-by"
+                  className="text-gray-700 font-medium mr-2"
+                >
+                  Sort By:
+                </label>
+                <div className="flex items-center gap-1 w-full">
+                  <select
+                    id="sort-by"
+                    defaultValue={filters.sortBy}
+                    name="sortBy"
+                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-green-500 focus:border-green-500"
+                    onChange={(e) => handleInputOnChange(e)}
                   >
-                    Sort By:
-                  </label>
-                  <div className="flex items-center gap-1">
-                    <select
-                      id="sort-by"
-                      defaultValue={filters.sortBy}
-                      name="sortBy"
-                      className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-green-500 focus:border-green-500"
-                      onChange={(e) => handleInputOnChange(e)}
-                    >
-                      <option value="">Relevance</option>
-                      <option value="title">Title</option>
-                      <option value="author">Author</option>
-                      <option value="publication-year">Publication Year</option>
-                    </select>
-                    <div
-                      className="p-3 h-full inline-block border-2 rounded border-gray-200 cursor-pointer"
-                      onClick={() =>
-                        handleSortBy(
-                          filters.sortOrder === 'asc' ? 'desc' : 'asc'
-                        )
-                      }
-                    >
-                      {filters.sortOrder === 'desc' ? (
-                        <FcAlphabeticalSortingZa className="text-lg" />
-                      ) : (
-                        <FcAlphabeticalSortingAz className="text-lg" />
-                      )}
-                    </div>
+                    <option value={'title'}>Title</option>
+                    <option value={'rating'}>Rating</option>
+                    <option value={'genre'}>Genre</option>
+                  </select>
+                  <div
+                    className="p-3 h-full inline-block border-2 rounded border-gray-200 cursor-pointer"
+                    onClick={() =>
+                      handleSortBy(filters.sortOrder === 'asc' ? 'desc' : 'asc')
+                    }
+                  >
+                    {filters.sortOrder === 'desc' ? (
+                      <FcAlphabeticalSortingZa className="text-lg" />
+                    ) : (
+                      <FcAlphabeticalSortingAz className="text-lg" />
+                    )}
                   </div>
                 </div>
               </div>
