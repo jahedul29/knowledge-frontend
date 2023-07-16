@@ -6,10 +6,12 @@ export interface IPrivateRouteProps {
   children: ReactNode;
 }
 const PrivateRoute = ({ children }: IPrivateRouteProps) => {
-  const { accessToken } = useAppSelector((state) => state.auth);
+  const { user, accessToken } = useAppSelector((state) => state.auth);
   const location = useLocation();
+  console.log({ user, accessToken });
 
-  if (!accessToken) {
+  if (!user) {
+    console.log('I am here');
     return <Navigate to={'/login'} state={{ from: location.pathname }} />;
   }
 

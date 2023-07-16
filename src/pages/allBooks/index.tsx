@@ -1,13 +1,18 @@
 import BookCard from '@/components/Common/BookCard';
 import Container from '@/components/Common/Container';
+import OverlayLoading from '@/components/Common/OverlayLoading';
 import PageHeader from '@/components/Common/PageHeader';
 import { useGetBooksQuery } from '@/redux/features/book/bookApi';
 import { IBook } from '@/types/Book';
 
 const AllBooks = () => {
-  const { data } = useGetBooksQuery({ page: '', limit: '' });
+  const { data, isLoading } = useGetBooksQuery(
+    { page: '', limit: '' },
+    { refetchOnMountOrArgChange: true }
+  );
   return (
     <div>
+      {isLoading && <OverlayLoading />}
       <PageHeader
         pageTitle="All Books"
         breadCrumbItems={[{ label: 'Home', href: '/' }, { label: 'All Books' }]}

@@ -12,11 +12,26 @@ const bookApi = api.injectEndpoints({
         body: data,
       }),
     }),
+    updateBook: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/books/${id}`,
+        method: 'PATCH',
+        body: data,
+      }),
+    }),
     getBookDetails: builder.query({
       query: (id: string | undefined) => `/books/${id}`,
+    }),
+    deleteBook: builder.mutation({
+      query: (id) => ({ url: `/books/${id}`, method: 'DELETE' }),
     }),
   }),
 });
 
-export const { useGetBooksQuery, useAddBookMutation, useGetBookDetailsQuery } =
-  bookApi;
+export const {
+  useGetBooksQuery,
+  useAddBookMutation,
+  useGetBookDetailsQuery,
+  useDeleteBookMutation,
+  useUpdateBookMutation,
+} = bookApi;

@@ -1,5 +1,6 @@
 import BookCard from '@/components/Common/BookCard';
 import Container from '@/components/Common/Container';
+import OverlayLoading from '@/components/Common/OverlayLoading';
 import SectionHeader from '@/components/Common/SectionHeader';
 import HeroSection from '@/components/Home/HeroSection';
 import { useGetBooksQuery } from '@/redux/features/book/bookApi';
@@ -7,7 +8,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { IBook } from '@/types/Book';
 
 const Home = () => {
-  const { data } = useGetBooksQuery(
+  const { data, isLoading } = useGetBooksQuery(
     { page: 1, limit: 6 },
     { refetchOnMountOrArgChange: true }
   );
@@ -134,6 +135,7 @@ const Home = () => {
     <div>
       <HeroSection />
       <Container>
+        {isLoading && <OverlayLoading />}
         <SectionHeader
           title="The Most Read Books"
           subtitle="Best Books"

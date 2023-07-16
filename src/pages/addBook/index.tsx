@@ -5,9 +5,16 @@ import CustomSelect from '@/components/Common/CustomSelect';
 import OverlayLoading from '@/components/Common/OverlayLoading';
 import PageHeader from '@/components/Common/PageHeader';
 import { bookGenre } from '@/helpers/constants';
-import { useAddBookMutation } from '@/redux/features/book/bookApi';
+import {
+  useAddBookMutation,
+  useGetBookDetailsQuery,
+  useUpdateBookMutation,
+} from '@/redux/features/book/bookApi';
 import { IBookGenre } from '@/types/Book';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 interface IAddBookInput {
   title: string;
@@ -19,6 +26,13 @@ interface IAddBookInput {
 
 const AddBook = () => {
   const [addBook, options] = useAddBookMutation();
+  const [updateBook, updateOptions] = useUpdateBookMutation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { data: bookDetails, refetch } = useGetBookDetailsQuery(
+    location.state?.id
+  );
+  const [isEdit, setIsEdit] = useState(location?.state?.isEdit);
   const {
     register,
     handleSubmit,
@@ -27,9 +41,31 @@ const AddBook = () => {
     reset,
     formState: { errors },
   } = useForm<IAddBookInput>();
+  const bookId = location?.state?.id;
+
+  // useEffect(() => {
+  //   setIsEdit(location?.state?.isEdit);
+  // }, [location]);
+
+  useEffect(() => {
+    if (isEdit && bookDetails?.data) {
+      reset({
+        title: bookDetails?.data?.title,
+        description: bookDetails?.data?.description,
+        genre: bookDetails?.data?.genre,
+        cover: bookDetails?.data?.cover,
+        publicationDate: new Date(bookDetails?.data?.publicationDate),
+      });
+    } else {
+      reset();
+    }
+  }, [isEdit, bookDetails, reset]);
 
   const onSubmit: SubmitHandler<IAddBookInput> = async (data) => {
-    const result: any = await addBook(data);
+    console.log(typeof data.publicationDate);
+    const result: any = isEdit
+      ? await updateBook({ id: bookId, ...data })
+      : await addBook(data);
     console.log({ result });
     if (result.error) {
       toast.error(result.error.data.message);
@@ -37,12 +73,17 @@ const AddBook = () => {
     if (result?.data) {
       toast.success(result.data.message);
 
-      reset();
+      if (isEdit) {
+        navigate(`/books/${bookId}`);
+      } else {
+        reset();
+      }
     }
   };
+
   return (
     <div>
-      {options?.isLoading && <OverlayLoading />}
+      {(options?.isLoading || updateOptions?.isLoading) && <OverlayLoading />}
 
       <PageHeader
         pageTitle="Add Book"

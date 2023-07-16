@@ -3,8 +3,11 @@ import Container from '@/components/Common/Container';
 import OverlayLoading from '@/components/Common/OverlayLoading';
 import PageHeader from '@/components/Common/PageHeader';
 import Toast from '@/components/Common/Toast';
-import { useLoginMutation } from '@/redux/features/auth/authApi';
-import { setToken } from '@/redux/features/auth/authSlice';
+import {
+  useGetMyProfileQuery,
+  useLoginMutation,
+} from '@/redux/features/auth/authApi';
+import { setToken, setUser } from '@/redux/features/auth/authSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
@@ -19,6 +22,7 @@ interface ILoginInput {
 
 const Login = () => {
   const [login, options] = useLoginMutation();
+  const { refetch } = useGetMyProfileQuery({ skip: true });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -36,9 +40,20 @@ const Login = () => {
     }
     if (result?.data) {
       dispatch(setToken(result?.data?.data?.accessToken));
-      Cookies.set('accessToken', result?.data?.data?.accessToken);
-      console.log(result);
+      const profileData = await refetch();
+      dispatch(setUser(profileData?.data?.data));
+      Cookies.set(
+        'user',
+        JSON.stringify({
+          user: profileData?.data?.data,
+          accessToken: result?.data?.data?.accessToken,
+        })
+      );
+      console.log({ profileData });
+
+      // console.log(result);
       toast.success(result?.data?.message);
+
       navigate('/');
     }
   };

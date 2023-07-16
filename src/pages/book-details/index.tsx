@@ -1,14 +1,17 @@
 import Container from '@/components/Common/Container';
 import OverlayLoading from '@/components/Common/OverlayLoading';
 import PageHeader from '@/components/Common/PageHeader';
-import { useGetBookDetailsQuery } from '@/redux/features/book/bookApi';
+import {
+  useDeleteBookMutation,
+  useGetBookDetailsQuery,
+} from '@/redux/features/book/bookApi';
 import { IBook } from '@/types/Book';
 import { IUser } from '@/types/User';
 import { BiLocationPlus } from 'react-icons/bi';
 import { FaUserAlt } from 'react-icons/fa';
 import { MdOutlinePhoneIphone } from 'react-icons/md';
 import { HiOutlineMail } from 'react-icons/hi';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   GrFacebookOption,
   GrTwitter,
@@ -19,6 +22,10 @@ import moment from 'moment';
 import Rating from '@/components/Common/Rating';
 import CommonButton from '@/components/Common/CommonButton';
 import { AiOutlineDelete, AiTwotoneEdit } from 'react-icons/ai';
+import { useAppSelector } from '@/redux/hooks';
+import { useState } from 'react';
+import Modal from '@/components/Common/Modal';
+import { toast } from 'react-toastify';
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -26,6 +33,10 @@ const BookDetails = () => {
   const { data, isError, isLoading } = useGetBookDetailsQuery(id, {
     refetchOnMountOrArgChange: true,
   });
+  const [deleteBook, options] = useDeleteBookMutation();
+  const { user } = useAppSelector((state) => state.auth);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
   //   console.log({ data });
 
   const socialLinks = [
@@ -51,12 +62,28 @@ const BookDetails = () => {
     },
   ];
 
+  const handleDelete = async () => {
+    const result: any = await deleteBook(id);
+    if (result?.error) {
+      toast.error(result.error.message);
+      return;
+    }
+    if (result?.data) {
+      toast.success(result?.data?.data?.message);
+      navigate('/books');
+    }
+  };
+
+  const handleEditButtonClick = () => {
+    navigate(`/add-book`, { state: { isEdit: true, id: id } });
+  };
+
   const bookDetails: IBook = data?.data;
   const author: IUser = data?.data?.author;
 
   return (
     <div>
-      {isLoading && <OverlayLoading />}
+      {(isLoading || options?.isLoading) && <OverlayLoading />}
       <PageHeader
         pageTitle={bookDetails?.title ? bookDetails.title : 'Book title'}
         breadCrumbItems={[
@@ -90,20 +117,28 @@ const BookDetails = () => {
                   </p>
                 </div>
               </div>
-              <div className="border-b-2 border-gray-100 w-full overflow-hidden py-4 flex justify-end space-x-4 p-4">
-                <CommonButton className="bg-blue-500 h-[40px] px-5 text-base font-semibold">
-                  <div className="flex items-center">
-                    <AiTwotoneEdit />
-                    Edit Book
-                  </div>
-                </CommonButton>
-                <CommonButton className="bg-red-500 h-[40px] px-5 text-base font-semibold">
-                  <div className="flex items-center">
-                    <AiOutlineDelete />
-                    Delete
-                  </div>
-                </CommonButton>
-              </div>
+              {user?._id === author?._id && (
+                <div className="border-b-2 border-gray-100 w-full overflow-hidden py-4 flex justify-end space-x-4 p-4">
+                  <CommonButton
+                    className="bg-blue-500 h-[40px] px-5 text-base font-medium rounded"
+                    onClick={handleEditButtonClick}
+                  >
+                    <div className="flex items-center">
+                      <AiTwotoneEdit />
+                      Edit Book
+                    </div>
+                  </CommonButton>
+                  <CommonButton
+                    className="bg-red-500 h-[40px] px-5 text-base font-medium rounded"
+                    onClick={() => setIsDeleteModalOpen(true)}
+                  >
+                    <div className="flex items-center">
+                      <AiOutlineDelete />
+                      Delete
+                    </div>
+                  </CommonButton>
+                </div>
+              )}
 
               <div className="border-b-2 border-gray-100 w-full h-[500px] overflow-hidden py-4">
                 <img
@@ -181,6 +216,33 @@ const BookDetails = () => {
           </div>
         </div>
       </Container>
+
+      {isDeleteModalOpen && (
+        <Modal
+          title="Delete Book"
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          className="w-[400px]"
+        >
+          <div className="py-4">
+            <h2>Do you really want to Delete this Book?</h2>
+          </div>
+          <div className="flex items-center justify-end pt-4 gap-3 border-t-2 border-gray-100">
+            <CommonButton
+              className="bg-gray-400 h-[40px] text-sm font-semibold px-3"
+              onClick={() => setIsDeleteModalOpen(false)}
+            >
+              Cancel
+            </CommonButton>
+            <CommonButton
+              className="bg-red-600 h-[40px] text-sm font-semibold px-3"
+              onClick={handleDelete}
+            >
+              Delete
+            </CommonButton>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

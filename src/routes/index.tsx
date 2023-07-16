@@ -27,6 +27,15 @@ const routes = createBrowserRouter([
         element: <BookDetails />,
       },
       {
+        path: '/add-book',
+        element: (
+          <PrivateRoute>
+            {' '}
+            <AddBook />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: '*',
         element: <NotFound />,
       },
@@ -37,15 +46,6 @@ const routes = createBrowserRouter([
       {
         path: '/register',
         element: <Register />,
-      },
-      {
-        path: '/add-book',
-        element: (
-          <PrivateRoute>
-            {' '}
-            <AddBook />
-          </PrivateRoute>
-        ),
       },
     ],
   },
