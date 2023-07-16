@@ -49,9 +49,7 @@ const Login = () => {
           accessToken: result?.data?.data?.accessToken,
         })
       );
-      console.log({ profileData });
 
-      // console.log(result);
       toast.success(result?.data?.message);
 
       navigate('/');

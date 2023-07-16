@@ -2,7 +2,6 @@ export const pickQueryParams = <K extends string>(
   obj: URLSearchParams,
   keys: K[]
 ): string => {
-  console.log({ obj, keys });
   const queryParams: string[] = [];
 
   for (const key of keys) {

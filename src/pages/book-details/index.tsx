@@ -37,7 +37,6 @@ const BookDetails = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const navigate = useNavigate();
-  //   console.log({ data });
 
   const socialLinks = [
     {

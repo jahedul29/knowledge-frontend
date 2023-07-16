@@ -62,11 +62,9 @@ const AddBook = () => {
   }, [isEdit, bookDetails, reset]);
 
   const onSubmit: SubmitHandler<IAddBookInput> = async (data) => {
-    console.log(typeof data.publicationDate);
     const result: any = isEdit
       ? await updateBook({ id: bookId, ...data })
       : await addBook(data);
-    console.log({ result });
     if (result.error) {
       toast.error(result.error.data.message);
     }
